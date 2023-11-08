@@ -1,6 +1,7 @@
 let score = 0;
 let revealedAmount = 0;
 let activeTile;
+let isLocked = false;
 let emojis = [
   "🎃",
   "🍁",
@@ -28,6 +29,9 @@ function createBoard() {
     tile.className = "tile";
     tile.innerHTML = emojis[num];
     tile.onclick = function () {
+      if (isLocked) {
+        return;
+      }
       tile.classList.add("clicked");
       score++;
       document.getElementById("score").innerHTML = `Score: ${score}`;
@@ -42,10 +46,12 @@ function createBoard() {
         }
         if (activeTile.innerHTML != tile.innerHTML) {
           console.log("clicked but not matched");
+          isLocked = true;
           setTimeout(function () {
             activeTile.classList.remove("clicked");
             tile.classList.remove("clicked");
             activeTile = null;
+            isLocked = false;
           }, 500);
         }
         if (activeTile.innerHTML == tile.innerHTML) {
@@ -70,6 +76,7 @@ function reset() {
   score = 0;
   document.getElementById("score").innerHTML = `Score: 0`;
   document.getElementById("comment").innerHTML = "";
+  isBoardLocked = false;
   emojis = [
     "🎃",
     "🍁",
@@ -98,10 +105,7 @@ function reset() {
   createBoard();
 }
 function generateComment() {
-  let comment;
-  if (score < 40) {
-    comment = "Well, you're doing fine, I guess. It's not rocket science.";
-  }
+  let comment = "Well, you're doing fine, I guess. It's not rocket science.";
   if (score < 30) {
     comment = "You're making progress, keep going! You've got this!";
   }
