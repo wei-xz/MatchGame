@@ -38,8 +38,6 @@ function createBoard() {
       if (!tile.classList.contains("matched")) {
         if (activeTile == null) {
           console.log("clicked active tile");
-          // Changed so score increases every time a pair is attempted rather than everytime a tile is clicked.
-
           activeTile = tile;
           return;
         }
